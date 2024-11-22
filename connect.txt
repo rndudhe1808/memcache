@@ -1,0 +1,30 @@
+How do I connect to an ElastiCache for Memcached cluster with Python?
+
+pip install pymemcache python-decouple
+$ echo "MEMCACHED_HOST=elasticache-memcached.XXXXXX.cfg.use1.cache.amazonaws.com" >> .env
+$ echo "MEMCACHED_PORT=11211" >> .env
+$ cat .env
+MEMCACHED_HOST=elasticache-memcached.XXXXXX.cfg.use1.cache.amazonaws.com
+MEMCACHED_PORT=11211
+#############################################################################################################################
+vi  elasticache_memcached.py
+from decouple import config
+from pymemcache.client.base import Client
+
+memcached_host = config('MEMCACHED_HOST')
+memcached_port = config('MEMCACHED_PORT')
+
+client = Client((memcached_host, memcached_port))
+
+if __name__ == "__main__":
+    client.set('key', 'Amazon ElastiCache for Memcached')
+    result = client.get('key')
+    print(f"key: {result}")
+#########################################################################################################################
+
+Finally, you can run this script and see the output.
+
+$ python elasticache_memcached.py
+key: b'Amazon ElastiCache for Memcached'
+
+###########################################################################################################################
